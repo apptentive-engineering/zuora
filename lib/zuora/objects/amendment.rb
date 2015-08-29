@@ -25,9 +25,6 @@ module Zuora::Objects
     attr_accessor :invoice_id
     attr_accessor :payment_transaction_number
 
-    complex_attributes :rate_plan_data
-    deferred_attributes :destination_account_id, :destination_invoice_owner_id, :renewal_setting
-
     define_attributes do
       read_only :created_by_id, :created_date, :updated_by_id, :updated_date, :amendment_ids, :invoice_id, :payment_transaction_number
       defaults :status => 'Draft'
@@ -39,8 +36,6 @@ module Zuora::Objects
     end
 
     def apply_response(response_hash, type)
-      return super if type == :delete_response
-
       result = response_hash[type][:results]
       if result[:success]
         self.amendment_ids = result[:amendment_ids]
