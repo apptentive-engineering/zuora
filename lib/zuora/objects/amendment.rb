@@ -36,6 +36,8 @@ module Zuora::Objects
     end
 
     def apply_response(response_hash, type)
+      return super if type == :delete_response
+
       result = response_hash[type][:results]
       if result[:success]
         self.amendment_ids = result[:amendment_ids]
