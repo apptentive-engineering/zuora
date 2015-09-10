@@ -6,6 +6,7 @@ module Zuora::Objects
     attr_accessor :payment_method
     attr_accessor :sold_to_contact
     attr_accessor :product_rate_plans
+    attr_accessor :product_rate_plan_charges
 
     store_accessors :subscribe_options
     store_accessors :preview_options
@@ -72,12 +73,21 @@ module Zuora::Objects
               generate_subscription(sub)
             end
 
-            product_rate_plans.each do |product_rate_plan|
-              sd.__send__(zns, :RatePlanData) do |rpd|
+            sd.__send__(zns, :RatePlanData) do |rpd|
+              product_rate_plans.each do |product_rate_plan|
                 rpd.__send__(zns, :RatePlan) do |rp|
                   rp.__send__(ons, :ProductRatePlanId, product_rate_plan.id)
                 end
               end
+
+              product_rate_plan_charges.each do |charge_data|
+                rpd.__send__(zns, :RatePlanChargeData) do |cd|
+                  cd.__send__(zns, :RatePlanCharge) do |rpc|
+                    rpc.__send__(ons, :ProductRatePlanChargeId, charge_data.product_rate_plan_charge_id)
+                    rpc.__send__(ons, :Price, charge_data.price)
+                  end
+                end
+              end unless product_rate_plan_charges.blank?
             end
           end
         end
@@ -146,4 +156,3 @@ module Zuora::Objects
     def save ; end
   end
 end
-
