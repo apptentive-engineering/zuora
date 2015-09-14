@@ -6,7 +6,7 @@ module Zuora::Objects
     attr_accessor :payment_method
     attr_accessor :sold_to_contact
     attr_accessor :product_rate_plans
-    attr_accessor :product_rate_plan_charges
+    attr_accessor :rate_plan_charges
 
     store_accessors :subscribe_options
     store_accessors :preview_options
@@ -80,14 +80,14 @@ module Zuora::Objects
                 end
               end
 
-              product_rate_plan_charges.each do |charge_data|
+              rate_plan_charges.each do |charge_data|
                 rpd.__send__(zns, :RatePlanChargeData) do |cd|
                   cd.__send__(zns, :RatePlanCharge) do |rpc|
                     rpc.__send__(ons, :ProductRatePlanChargeId, charge_data.product_rate_plan_charge_id)
                     rpc.__send__(ons, :Price, charge_data.price)
                   end
                 end
-              end unless product_rate_plan_charges.blank?
+              end unless rate_plan_charges.blank?
             end
           end
         end
