@@ -7,10 +7,10 @@ module Zuora::Objects
     belongs_to :original, :class_name => 'RatePlanCharge'
     belongs_to :product_rate_plan_charge
     belongs_to :rate_plan
-    
+
     has_many :rate_plan_charge_tiers
 
-    CHARGE_MODELS = [ 
+    CHARGE_MODELS = [
       "Flat Fee Pricing",
       "Per Unit Pricing",
       "Overage Pricing",
@@ -71,11 +71,12 @@ module Zuora::Objects
     define_attributes do
       read_only(
         :charged_through_date, :created_by_id, :created_date, :dmrc, :dtcv,
-        :effective_end_date, :effective_start_date, :mrr, :processed_through_date,
-        :rollover_balance, :tcv, :updated_by_id, :update_date, :version
+        :effective_end_date, :effective_start_date, :included_units, :mrr,
+        :processed_through_date, :rollover_balance, :tcv, :updated_by_id,
+        :update_date, :version
       )
 
-      defer :rollover_balance, :overage_price, :price, :included_units, :discount_amount, :discount_percentage
+      defer :rollover_balance, :overage_price, :price, :discount_amount, :discount_percentage
 
       defaults(
         :overage_calculation_option => 'EndOfSmoothingPeriod',
